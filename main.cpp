@@ -9,7 +9,7 @@ using namespace std::chrono;
 
 const int START = 1;
 const int END = 50;
-const int DEPTH = 5;
+const int DEPTH = 7;
 const int MAX_VAL = INT_MAX;    // INT_MIN cannot be negated!!
 const bool COMPUTER_STARTS = true;
 const bool DEBUG = true;
@@ -43,14 +43,14 @@ int score(auto possible_moves) {
     return possible_moves.size();
 }
 
-int minimax(int player, int depth, std::list<int> numbers, int last_move) {
+int minimax(int player, int depth, std::list<int> numbers, int last_move, int alpha, int beta) {
     calc_count++;
     auto possible_moves = get_possible_moves(numbers, last_move);
     if (depth == 0 || possible_moves.empty()) {
         return score(possible_moves);
     }
 
-    int max_val = INT_MIN;
+    int max_val = alpha;
     int i = 0;
     for (auto possible_move: possible_moves) {
         auto start = std::chrono::steady_clock::now();
@@ -59,11 +59,14 @@ int minimax(int player, int depth, std::list<int> numbers, int last_move) {
         }
         auto new_field = numbers;   // copy
         new_field.remove(possible_move);
-        auto val = -minimax(-player, depth - 1, new_field, possible_move);
+        auto val = -minimax(-player, depth - 1, new_field, possible_move, -beta, -max_val);
         if (val > max_val) {
             max_val = val;
             if (depth == DEPTH) {
                 next_move = possible_move;
+            }
+            if(max_val >= beta) {
+                break;
             }
         }
 
@@ -79,7 +82,7 @@ int minimax(int player, int depth, std::list<int> numbers, int last_move) {
 
 int next(std::list<int> numbers, int last_number) {
     next_move = -1;
-    int score = minimax(+1, DEPTH, std::move(numbers), last_number);
+    int score = minimax(+1, DEPTH, std::move(numbers), last_number, -MAX_VAL, MAX_VAL);
     std::cout << "\33[2K\r"; std::cout << "finished " << calc_count << " calculations" << std::endl;
     calc_count = 0;
     std::cout << "next move is " << next_move << " with score " << score << std::endl;
