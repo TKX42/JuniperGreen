@@ -17,7 +17,7 @@ const bool DEBUG = true;
 int calc_count = 0;
 int next_move = -1;
 
-void print(auto data) {
+void print(const auto& data) {
     for (auto x: data) {
         std::cout << x << " ";
     }
@@ -28,7 +28,7 @@ bool valid(int last_number, int x) {
     return (x % last_number == 0 || last_number % x == 0) && x > 0;
 }
 
-std::list<int> get_possible_moves(std::list<int> &numbers, int last_number) {
+std::list<int> get_possible_moves(const std::list<int>& numbers, int last_number) {
     std::list<int> possible_moves;
     for (int x: numbers) {
         if (valid(last_number, x)) {
@@ -38,7 +38,7 @@ std::list<int> get_possible_moves(std::list<int> &numbers, int last_number) {
     return possible_moves;
 }
 
-int score(auto possible_moves) {
+int score(const auto& possible_moves) {
     if (possible_moves.empty()) return -MAX_VAL;
     return possible_moves.size();
 }
