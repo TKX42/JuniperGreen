@@ -1,3 +1,7 @@
+/*
+ * 2023 Tristan Kaupa
+ */
+
 #include <iostream>
 #include <list>
 #include <algorithm>
