@@ -43,7 +43,7 @@ int score(const auto& possible_moves) {
     return possible_moves.size();
 }
 
-int minimax(int player, int depth, std::list<int> numbers, int last_move, int alpha, int beta) {
+int minimax(int player, int depth, const std::list<int>& numbers, int last_move, int alpha, int beta) {
     calc_count++;
     auto possible_moves = get_possible_moves(numbers, last_move);
     if (depth == 0 || possible_moves.empty()) {
